@@ -15,6 +15,9 @@ export class User {
     @Column()
     password: string;
 
+    @Column()
+    email: string;
+
     @Column({ default: 1 })
     status: number; // trạng thái account
 }
