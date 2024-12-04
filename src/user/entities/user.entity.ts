@@ -23,7 +23,7 @@ export class User {
     @Column()
     email: string;
 
-    @Column()
+    @Column({ nullable: true, default: null }) // cho phép nó null - và mặc định khi tạo nó sẽ gán giá trị null
     refresh_token: string; // lưu refreshtoken
 
     @Column({ default: 1 })
