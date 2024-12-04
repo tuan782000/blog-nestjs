@@ -6,6 +6,7 @@ import { User } from 'src/user/entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -13,7 +14,8 @@ export class AuthService {
     // Tạo constructor
     constructor(
         @InjectRepository(User) private userRepository: Repository<User>,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        private configService: ConfigService
     ) {}
 
     // viết tính năng đăng ký
@@ -73,7 +75,8 @@ export class AuthService {
     async refreshToken(refresh_token: string): Promise<any> {
         try {
             const verify = await this.jwtService.verifyAsync(refresh_token, {
-                secret: '123456'
+                // secret: '123456'
+                secret: this.configService.get<string>('SECRET')
             });
             console.log(verify);
 
@@ -117,8 +120,10 @@ export class AuthService {
     private async generateToken(payload: { id: number; email: string }) {
         const access_token = await this.jwtService.signAsync(payload); // đăng ký payload này để tạo thành token
         const refresh_token = await this.jwtService.signAsync(payload, {
-            secret: '123456',
-            expiresIn: '1d'
+            // secret: '123456',
+            secret: this.configService.get<string>('SECRET'),
+            // expiresIn: '1d',
+            expiresIn: this.configService.get<string>('EXP_IN_ACCESS_TOKEN')
         });
 
         await this.userRepository.update(
