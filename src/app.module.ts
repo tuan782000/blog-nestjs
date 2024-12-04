@@ -4,6 +4,7 @@ import { dataSourceOptions } from 'db/data-source';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
@@ -21,7 +22,8 @@ import { UserModule } from './user/user.module';
             // Thay vì dùng như trên mình sẽ tách ra dataSourceOptions sau đó custom lại không cho tự sinh và cấu hình migrations
             dataSourceOptions
         ),
-        UserModule
+        UserModule,
+        AuthModule
     ],
     controllers: [AppController],
     providers: [AppService]
