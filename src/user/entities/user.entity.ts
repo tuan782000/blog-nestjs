@@ -1,8 +1,10 @@
+import { Post } from 'src/post/entities/post.entity';
 import {
     Entity,
     Column,
     PrimaryGeneratedColumn,
-    CreateDateColumn
+    CreateDateColumn,
+    OneToMany
 } from 'typeorm';
 
 // các @ là các anotation - thư viện cung cấp - thư viện typeorm
@@ -37,4 +39,9 @@ export class User {
 
     @CreateDateColumn()
     updated_at: Date;
+
+    // định nghĩa 1 user có nhiều post
+    // posts nó là 1 mảng danh sách các post mà user này sở hữu
+    @OneToMany(() => Post, post => post.user)
+    posts: Post[];
 }
