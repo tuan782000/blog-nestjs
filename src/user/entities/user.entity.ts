@@ -26,6 +26,9 @@ export class User {
     @Column({ nullable: true, default: null }) // cho phép nó null - và mặc định khi tạo nó sẽ gán giá trị null
     refresh_token: string; // lưu refreshtoken
 
+    @Column({ nullable: true, default: null }) // cho phép nó null - và mặc định khi tạo nó sẽ gán giá trị null
+    avatar: string; // lưu refreshtoken
+
     @Column({ default: 1 })
     status: number; // trạng thái account
 
