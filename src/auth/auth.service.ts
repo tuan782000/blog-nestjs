@@ -146,7 +146,7 @@ export class AuthService {
             // secret: '123456',
             secret: this.configService.get<string>('SECRET'),
             // expiresIn: '1d',
-            expiresIn: this.configService.get<string>('EXP_IN_ACCESS_TOKEN')
+            expiresIn: this.configService.get<string>('EXP_IN_REFRESH_TOKEN')
         });
 
         await this.userRepository.update(
