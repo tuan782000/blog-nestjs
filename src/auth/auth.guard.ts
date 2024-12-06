@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import {
     CanActivate,
     ExecutionContext,
+    HttpException,
     Injectable,
     UnauthorizedException
 } from '@nestjs/common';
@@ -40,7 +41,15 @@ export class AuthGuard implements CanActivate {
             // đính kèm nó vào userRequest
             request['user_data'] = payload;
         } catch (error) {
-            throw new UnauthorizedException();
+            // throw new UnauthorizedException();
+            // token khi expired - hết hạn vào đây
+            throw new HttpException(
+                {
+                    status: 419,
+                    message: 'Token expired'
+                },
+                419
+            );
         }
 
         return true;

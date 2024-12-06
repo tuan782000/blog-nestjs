@@ -13,7 +13,8 @@ import { ConfigModule } from '@nestjs/config'; // Import ConfigModule
         JwtModule.register({
             global: true,
             secret: '123456',
-            signOptions: { expiresIn: '1h' }
+            // signOptions: { expiresIn: '1h' } // hết hạn sau 1 tiếng
+            signOptions: { expiresIn: 10 } // hết hạn sau 10 giây - ngắn đi để test
         }),
         ConfigModule // Import ConfigModule
     ],
