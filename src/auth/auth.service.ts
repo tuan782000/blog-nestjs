@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+    HttpException,
+    HttpStatus,
+    Injectable,
+    UnauthorizedException
+} from '@nestjs/common';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -40,6 +45,8 @@ export class AuthService {
                 email: loginUserDto.email
             }
         });
+
+        await new Promise(resolve => setTimeout(resolve, 2000)); // mô phỏng việc làm chậm đăng nhập
 
         // kiểm tra xem kết quả tìm kiếm có hay không - nếu không trả về lỗi
         // nghịch đảo false là true vào trong if ném lỗi về client
@@ -103,6 +110,22 @@ export class AuthService {
                 HttpStatus.BAD_REQUEST
             );
         }
+    }
+
+    async deleteTokenByUser(userId: number): Promise<any> {
+        const user = await this.userRepository.findOne({
+            where: { id: userId },
+            select: ['id', 'refresh_token']
+        });
+
+        if (!user) {
+            throw new UnauthorizedException('User not found');
+        }
+
+        // Xóa refresh_token (gán giá trị null)
+        await this.userRepository.update(userId, { refresh_token: null });
+
+        return { message: 'Signout successfully' };
     }
 
     // viết 1 function riêng để hashed password - sau đó đem vào register dùng

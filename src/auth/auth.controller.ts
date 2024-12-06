@@ -2,6 +2,8 @@ import {
     Body,
     Controller,
     Post,
+    Req,
+    UseGuards,
     UsePipes,
     ValidationPipe
 } from '@nestjs/common';
@@ -10,6 +12,7 @@ import { AuthService } from './auth.service';
 import { User } from 'src/user/entities/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from './auth.guard';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -70,5 +73,12 @@ export class AuthController {
     refreshToken(@Body() { refresh_token }): Promise<any> {
         console.log('refresh token api');
         return this.authService.refreshToken(refresh_token);
+    }
+
+    @UseGuards(AuthGuard)
+    @Post('signout')
+    signOut(@Req() request: Request): Promise<any> {
+        const user = request['user_data']; // Lấy thông tin user từ request
+        return this.authService.deleteTokenByUser(user.id);
     }
 }

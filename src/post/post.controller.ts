@@ -81,7 +81,7 @@ export class PostController {
     /*
         query: FilterPostDto sẽ chứa
         - page: string;
-        - item_per_page: string;
+        - items_per_page: string;
         - search: string;
         */
     @UseGuards(AuthGuard)

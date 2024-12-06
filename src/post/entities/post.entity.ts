@@ -1,3 +1,4 @@
+import { Category } from 'src/category/entities/category.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
     Entity,
@@ -36,4 +37,7 @@ export class Post {
     // bên user vẫn phải có OneToMany để đối xứng bên này
     @ManyToOne(() => User, user => user.posts)
     user: User;
+
+    @ManyToOne(() => Category, category => category.posts)
+    category: Category;
 }

@@ -1,3 +1,5 @@
+import { Category } from 'src/category/entities/category.entity';
+
 export class UpdatePostDto {
     title: string;
 
@@ -6,4 +8,6 @@ export class UpdatePostDto {
     thumbnail: string;
 
     status: number;
+
+    category: Category;
 }
