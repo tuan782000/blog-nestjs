@@ -14,7 +14,7 @@ import { ConfigModule } from '@nestjs/config'; // Import ConfigModule
             global: true,
             secret: '123456',
             // signOptions: { expiresIn: '1h' } // hết hạn sau 1 tiếng
-            signOptions: { expiresIn: 10 } // hết hạn sau 10 giây - ngắn đi để test
+            signOptions: { expiresIn: '10m' } // hết hạn sau 10 giây - ngắn đi để test
         }),
         ConfigModule // Import ConfigModule
     ],

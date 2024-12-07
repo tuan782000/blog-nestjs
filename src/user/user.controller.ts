@@ -5,6 +5,7 @@ import {
     Delete,
     Get,
     Param,
+    ParseArrayPipe,
     Post,
     Put,
     Query,
@@ -18,7 +19,6 @@ import { User } from './entities/user.entity';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { query } from 'express';
 import { FilterUserDto } from './dto/filter-user.dto';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -63,11 +63,30 @@ export class UserController {
         return this.userService.update(Number(id), updateUserDto);
     }
 
+    // Phải đặt nó nằm trước
+    @Delete('multiple')
+    multipleDelete(
+        @Query('ids', new ParseArrayPipe({ items: String, separator: ',' }))
+        ids: string[]
+    ) {
+        console.log('delete multi=> ', ids);
+        return this.userService.multipleDelete(ids);
+    }
+
     @UseGuards(AuthGuard) // chuyển thành api private
     @Delete(':id')
     deleteUser(@Param('id') id: string) {
         return this.userService.delete(Number(id));
     }
+
+    // Xoá nhiều dữ liệu cùng 1 lúc
+    // @UseGuards(AuthGuard)
+    // @Delete('multiple')
+    // multipleDelete(@Query('ids') ids: string[]) {
+    //     console.log('Delete multi =>', ids);
+    // }
+
+    // items: String, separator: ','  convert chuỗi thành mảng dựa trên dấu phẩy chia thành 1 ô trong mảng
 
     // Sau khi có ảnh tải lên - thì cần có id chính xác của user đó mình mới có thể cập nhật avatar cho user
     // giống như get user cụ thể hoặc edit hay delete cần id truyền params

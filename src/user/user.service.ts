@@ -2,7 +2,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { DeleteResult, Like, Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, In, Like, Repository, UpdateResult } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -107,5 +107,11 @@ export class UserService {
 
     async updateAvatar(id: number, avatar: string): Promise<UpdateResult> {
         return await this.userRepository.update(id, { avatar });
+    }
+
+    // xoá nhiều user cùng lúc
+    async multipleDelete(ids: string[]): Promise<DeleteResult> {
+        // delete truyền mảng id vào - { id: In(ids) } xoá các id có trong ids - where in
+        return await this.userRepository.delete({ id: In(ids) });
     }
 }
