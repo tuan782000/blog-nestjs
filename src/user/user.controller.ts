@@ -41,6 +41,12 @@ export class UserController {
         return this.userService.findAll(query);
     }
 
+    @UseGuards(AuthGuard)
+    @Get('profile')
+    profile(@Req() req: any): Promise<User> {
+        return this.userService.findOne(req.user_data.id);
+    }
+
     // lấy ra 1 user chi tiết - phải kèm id - dựa vào id để query database
     @UseGuards(AuthGuard) // lúc này api này đã thành private
     @Get(':id')
@@ -133,7 +139,7 @@ export class UserController {
 
         return this.userService.updateAvatar(
             Number(req.user_data.id), // id của user đó
-            file.destination + '/' + file.filename // object đường dẫn của ảnh
+            file.fieldname + '/' + file.filename // object đường dẫn của ảnh
         );
     }
 }

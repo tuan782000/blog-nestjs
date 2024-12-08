@@ -55,6 +55,12 @@ export class PostService {
                     category: {
                         id: category
                     }
+                },
+                {
+                    category: {
+                        name: Like('%' + search + '%'), // Truy vấn name từ quan hệ category
+                        id: category // Optional nếu cần kết hợp với id category
+                    }
                 }
             ],
             order: { created_at: 'DESC' },
